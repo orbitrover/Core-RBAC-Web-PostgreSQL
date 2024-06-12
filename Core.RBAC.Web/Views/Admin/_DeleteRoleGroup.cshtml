@@ -1,0 +1,37 @@
+﻿@model Core.Models.IdentityRoleExtended
+@{
+    Layout = null;
+}
+
+<input type="hidden" id="header" value="Delete Role Group" />
+<div class="row">
+    <div class="alert alert-danger" role="alert">
+        <h6 class="alert-heading mb-2">Critical Warning</h6>
+        <p class="mb-0">Deleting the Role name, you might break the system authorization and permissions functionality. Please ensure you're absolutely certain before proceeding.</p>
+    </div>
+    <div class="col-md-12">
+        <form asp-action="_DeleteRoleGroup">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Name" />
+            <input type="hidden" asp-for="ParentRoleId" />
+            <h6>Are you sure want to delete the role name <span class="text-danger">@Model.Name</span> ?</h6>
+            <input type="checkbox" id="allowDelete" name="allowDelete" />
+            <label for="allowDelete" class="form-label">Yes</label>
+            <div class="form-group mt-3" id="formSubmit" style="display:block;">
+                <input type="submit" value="Submit" class="btn btn-outline-primary btn-sm" disabled />
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('input[type="submit"]').prop('disabled', true);
+    })
+    $(document).on("change", "#allowDelete", function () {
+        if ($(this).prop('checked'))
+            $(this).closest('form').find('input[type="submit"]').prop('disabled', false);
+        else
+            $(this).closest('form').find('input[type="submit"]').prop('disabled', true);
+    });
+</script>

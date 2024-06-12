@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<h4>Manage Users</h4>
+<div class="row mt-3">
+    <div class="col-md-12">
+        @if (ViewBag.FilterOption != null)
+        {
+            foreach (var Ctr in ViewBag.FilterOption)
+            {
+                <a id="FilterOptions_@Ctr" class="btn btn-outline-info btn-sm"
+                   href="/Admin/UserList?filterOption=@Ctr" data-modal-filter-option="">@Ctr</a>
+            }
+        }
+    </div>
+</div>
+
+
+<div class="row mt-4">
+    <div class="col-md-12" id="replacetarget">
+    </div>
+</div>
+<script>
+    window.onload = function () {
+        $('#replacetarget').load('/Admin/UserList?filterOption=All');
+        // $('#replacetarget').load('/Admin/UserList?filterOption=All', function () {
+        //     LoadPartial();
+        // });
+    };
+    $(document).on("click", "a[data-modal-filter-option]", function (e) {
+        $('#replacetarget').load(this.href);
+        return false;
+    });
+</script>
+

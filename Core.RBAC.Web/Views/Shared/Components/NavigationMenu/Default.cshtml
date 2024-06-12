@@ -1,0 +1,125 @@
+﻿@model List<Core.Models.NavigationMenuViewModel>
+@{
+    ViewData["Title"] = "NavigationMenu";
+}
+<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Dynamic Role Authorization</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto flex-grow-1">
+        <li class="nav-item">
+            <a class="nav-link text" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+        </li>
+
+        @*4 Level Menu Items from the database*@
+        @{
+            var topMenu = Model.Where(x => x.ParentMenuId == null && x.Visible == true).ToList();
+            foreach (var item in topMenu)
+            {
+                if (item.IsExternal && !string.IsNullOrWhiteSpace(item.ExternalUrl))
+                {
+                    <li class="nav-item active">
+                        <a target="_blank" title="External Link" class="nav-link text" href="@item.ExternalUrl">@item.Name</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item dropdown" id="myDropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" title="3 Level Menue" asp-area="@item.Area" asp-controller="@item.ControllerName" asp-action="@item.ActionName">  @item.Name  </a>
+                        @{
+                            var childMenu = Model.Where(x => x.ParentMenuId == item.Id && x.Visible == true).OrderBy(o => o.DisplayOrder).ToList();
+                            if (childMenu != null && childMenu.Count > 0)
+                            {
+                                <ul class="dropdown-menu">
+                                    @foreach (var item2 in childMenu)
+                                    {
+                                        <li>
+
+                                            @{
+                                                var childMenu2 = Model.Where(x => x.ParentMenuId == item2.Id && x.Visible == true).OrderBy(o => o.DisplayOrder).ToList();
+                                                if (childMenu2 != null && childMenu2.Count > 0)
+                                                {
+                                                    if (item2.IsExternal && !string.IsNullOrWhiteSpace(item2.ExternalUrl))
+                                                    {
+                                                        <a target="_blank" title="External Link" class="dropdown-item" href="@item2.ExternalUrl">@item2.Name</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="dropdown-item" asp-area="@item2.Area" asp-controller="@item2.ControllerName" asp-action="@item2.ActionName"> @item2.Name <i class="fa fa-caret-right"></i></a>
+                                                    }
+                                                    <ul class="submenu dropdown-menu">
+                                                        @foreach (var item3 in childMenu2)
+                                                        {
+                                                            <li>
+
+
+                                                                @{
+                                                                    var childMenu3 = Model.Where(x => x.ParentMenuId == item3.Id && x.Visible == true).OrderBy(o => o.DisplayOrder).ToList();
+                                                                    if (childMenu3 != null && childMenu3.Count > 0)
+                                                                    {
+                                                                        if (item3.IsExternal && !string.IsNullOrWhiteSpace(item3.ExternalUrl))
+                                                                        {
+                                                                            <a target="_blank" title="External Link" class="dropdown-item" href="@item3.ExternalUrl">@item3.Name</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a class="dropdown-item" asp-area="@item3.Area" asp-controller="@item3.ControllerName" asp-action="@item3.ActionName">@item3.Name <i class="fa fa-caret-right"></i></a>
+                                                                        }
+                                                                        <ul class="submenu dropdown-menu">
+                                                                            @foreach (var item4 in childMenu3)
+                                                                            {
+                                                                                if (item4.IsExternal && !string.IsNullOrWhiteSpace(item4.ExternalUrl))
+                                                                                {
+                                                                                    <a target="_blank" title="External Link" class="dropdown-item" href="@item4.ExternalUrl">@item4.Name</a>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <li><a class="dropdown-item" asp-area="@item4.Area" asp-controller="@item4.ControllerName" asp-action="@item4.ActionName">@item4.Name</a></li>
+                                                                                }
+                                                                            }
+                                                                        </ul>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (item3.IsExternal && !string.IsNullOrWhiteSpace(item3.ExternalUrl))
+                                                                        {
+                                                                            <a target="_blank" title="External Link" class="dropdown-item" href="@item3.ExternalUrl">@item3.Name</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a class="dropdown-item" asp-area="@item3.Area" asp-controller="@item3.ControllerName" asp-action="@item3.ActionName">@item3.Name </a>
+                                                                        }
+                                                                    }
+                                                                }
+
+
+                                                            </li>
+                                                        }
+
+                                                    </ul>
+                                                }
+                                                else
+                                                {
+                                                    <a class="dropdown-item" asp-area="@item2.Area" asp-controller="@item2.ControllerName" asp-action="@item2.ActionName"> @item2.Name </a>
+                                                }
+                                            }
+
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        }
+
+                    </li>
+                }
+            }
+        }
+
+       
+    </ul>
+    <partial name="_LoginPartial" />
+</div>

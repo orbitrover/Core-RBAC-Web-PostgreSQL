@@ -1,0 +1,40 @@
+﻿@model List<Core.Models.NavigationMenuViewModel>
+@{
+	Layout = null;
+}
+<style>
+	ul li a {
+		float: right;
+	}
+</style>
+<input type="hidden" id="header" value="Edit Role Permission" />
+<div class="row">
+	<h4>
+		Menu Permission
+		<a id="MenuControls" style="float: right;"
+		   href="/Admin/MenuControl" title="Menu Controls" target="_blank">
+			<i class="fa fa-list"></i>
+		</a>
+	</h4>
+	<div class="col-md-12">
+		<form asp-action="EditRolePermission">
+			<div class="form-group">
+				<ul style="list-style-type: none;">
+					@for (var i = 0; i < Model.Count; i++)
+					{
+						<li>
+							<input type="checkbox" asp-for="@Model[i].Permitted" />
+							<label style="margin-left:10px;" asp-for="@Model[i].Permitted">@Model[i].Name</label>
+							<input type="hidden" asp-for="@Model[i].Id" />
+							<input type="hidden" asp-for="@Model[i].Name" />
+							<a href="/@Model[i].ControllerName/@Model[i].ActionName" target="_blank">/@Model[i].ControllerName/@Model[i].ActionName</a>
+						</li>
+					}
+				</ul>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>

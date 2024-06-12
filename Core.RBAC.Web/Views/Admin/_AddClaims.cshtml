@@ -1,0 +1,42 @@
+﻿@{
+    Layout = null;
+    var id = ViewBag.UserId;
+}
+
+<input type="hidden" id="header" value="Add Claim" />
+
+<form method="post" asp-action="AddClaims">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" id="UserId" name="Id" value="@id" />
+    <div class="row">
+        <div class="form-group">
+            <label for="type" class="form-label">Claim Type</label>
+            <select class="form-control" name="type">
+                @if (ViewBag.ClaimTypes != null)
+                {
+                    foreach (var claimType in ViewBag.ClaimTypes)
+                    {
+                        <option value="@claimType">
+                            @claimType
+                        </option>
+                    }
+                }
+            </select>
+
+        </div>
+
+        <div class="form-group mt-1">
+            <label for="type" class="form-label">Claim Value</label>
+            <input class="form-control" name="value" />
+
+        </div>
+
+        <div class="form-group mt-3">
+            <button type="submit"
+                    class="btn btn-sm btn-outline-primary">
+                Submit
+            </button>
+
+        </div>
+    </div>
+</form>

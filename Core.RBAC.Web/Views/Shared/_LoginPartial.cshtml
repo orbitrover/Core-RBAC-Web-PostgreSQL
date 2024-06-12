@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Core.Models.IdentityUserExtended> SignInManager
+@inject UserManager<Core.Models.IdentityUserExtended> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @*  <li class="nav-item">
+    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+    </li> *@
+        <li class="nav-item dropdown" id="myDropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" title="3 Level Menue" href="/" aria-expanded="true"> <i class='fa fa-user-circle fa-2x'></i>   </a>
+            <ul class="dropdown-menu auth-menu" data-bs-popper="none">
+                <li>
+                    <a class="dropdown-item" title="Manage"> @User.Identity?.Name.Split('@')[0] </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"> Manage </a>
+                </li>
+                <li>
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                    </form>
+                </li>
+            </ul>
+
+        </li>
+
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul>

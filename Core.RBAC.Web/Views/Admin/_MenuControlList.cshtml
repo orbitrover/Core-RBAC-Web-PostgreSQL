@@ -1,0 +1,315 @@
+﻿@model IEnumerable<Core.Models.NavigationMenuViewModel>
+@{
+    Layout = null;
+    int count = 0;
+}
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th width="7%">
+                            <a asp-action="CreateMenuControl" asp-controller="Admin" asp-route-id="" data-bs-toggle="tooltip" title="Hooray!" class="btn btn-outline-primary btn-sm" data-modal="">
+                                <i class="fa fa-plus"></i> Add
+                            </a>
+                        </th>
+                        <th>Name</th>
+                        <th>Parent Menu</th>
+                        <th>Area</th>
+                        <th>Controller Name</th>
+                        <th>Action Name</th>
+                        <th>IsExternal</th>
+                        <th>ExternalUrl</th>
+                        <th>Permitted</th>
+                        <th>DisplayOrder</th>
+                        <th>Visible</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Where(x => x.ParentMenuId == null))
+                    {
+                        int countChild = 0;
+                        <tr>
+                            <td width="7%">
+                                <a asp-action="EditMenuControl" asp-controller="Admin" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" data-modal="">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                @if (Model.Where(x => x.ParentMenuId == item.Id).Count() > 0)
+                                {
+                                    <a class="btn btn-outline-info btn-sm" sidepan-modal="" sidepan-data-target-id="hasChildren_@count" sidepan-data-target-header="Child Nodes" sidepan-data-target-width="80%">
+                                        <i class="fa fa-cogs"></i>
+                                    </a>
+                                }
+                            </td>
+                            <td class="open-child">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @(item.ParentNavigationMenu != null ? item.ParentNavigationMenu.Name : "")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Area)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ControllerName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ActionName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsExternal)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ExternalUrl)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Permitted)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DisplayOrder)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Visible)
+                            </td>
+
+                        </tr>
+                        <tr class="has-children">
+                            <td colspan="11" id="hasChildren_@count">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%;">
+                                                <a asp-action="CreateMenuControl" asp-controller="Admin" asp-route-id="@item.Id" data-bs-toggle="tooltip" titile="Add Child" class="btn btn-outline-primary btn-sm" data-modal="">
+                                                    <i class="fa fa-plus"></i> Add
+                                                </a>
+                                            </th>
+                                            <th>Name</th>
+                                            <th>Parent Menu</th>
+                                            <th>Area</th>
+                                            <th>Controller Name</th>
+                                            <th>Action Name</th>
+                                            <th>IsExternal</th>
+                                            <th>ExternalUrl</th>
+                                            <th>Permitted</th>
+                                            <th>DisplayOrder</th>
+                                            <th>Visible</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item2 in Model.Where(x => x.ParentMenuId == item.Id).OrderBy(o => o.DisplayOrder))
+                                        {
+                                            <tr>
+                                                <td width="5%">
+                                                    <a asp-action="EditMenuControl" asp-controller="Admin" asp-route-id="@item2.Id" class="btn btn-outline-warning btn-sm" data-modal="">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+                                                    @if (Model.Where(x => x.ParentMenuId == item2.Id).Count() > 0)
+                                                    {
+                                                        <a class="btn btn-outline-info btn-sm" sidepan-modal2="" sidepan-data-target-id="hasSubChildren_@countChild" sidepan-data-target-header="Sub Child Nodes" sidepan-data-target-width="70%">
+                                                            <i class="fa fa-cogs"></i>
+                                                        </a>
+                                                    }
+                                                </td>
+                                                <td class="open-child">
+                                                    @Html.DisplayFor(modelItem => item2.Name)
+                                                </td>
+                                                <td>
+                                                    @(item2.ParentNavigationMenu != null ? item2.ParentNavigationMenu.Name : "")
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.Area)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.ControllerName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.ActionName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.IsExternal)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.ExternalUrl)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.Permitted)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.DisplayOrder)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item2.Visible)
+                                                </td>
+
+                                            </tr>
+                                            <tr class="has-children">
+                                                <td colspan="11" id="hasSubChildren_@countChild">
+                                                    <table class="table table-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="5%">
+                                                                    <a asp-action="CreateMenuControl" asp-controller="Admin" asp-route-id="@item2.Id" data-bs-toggle="tooltip" titile="Add Child" class="btn btn-outline-primary btn-sm" data-modal="">
+                                                                        <i class="fa fa-plus"></i> Add
+                                                                    </a>
+                                                                </th>
+                                                                <th>Name</th>
+                                                                <th>Parent Menu</th>
+                                                                <th>Area</th>
+                                                                <th>Controller Name</th>
+                                                                <th>Action Name</th>
+                                                                <th>IsExternal</th>
+                                                                <th>ExternalUrl</th>
+                                                                <th>Permitted</th>
+                                                                <th>DisplayOrder</th>
+                                                                <th>Visible</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item3 in Model.Where(x => x.ParentMenuId == item2.Id).OrderBy(o => o.DisplayOrder))
+                                                            {
+                                                                <tr>
+                                                                    <td width ="5%">
+                                                                        <a asp-action="EditMenuControl" asp-controller="Admin" asp-route-id="@item3.Id" class="btn btn-outline-warning btn-sm" data-modal="">
+                                                                            <i class="fa fa-pencil"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item3.Name)
+                                                                    </td>
+                                                                    <td>
+                                                                        @(item3.ParentNavigationMenu != null ? item3.ParentNavigationMenu.Name : "")
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item3.Area)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item3.ControllerName)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item3.ActionName)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item3.IsExternal)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item3.ExternalUrl)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item3.Permitted)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item3.DisplayOrder)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item3.Visible)
+                                                                    </td>
+
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            countChild++;
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-12" style="display:none;">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th>
+                            <a asp-action="CreateMenuControl" asp-controller="Admin" class="btn btn-outline-primary btn-sm" data-modal="">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </th>
+                        <th>Name</th>
+                        <th>Parent Menu</th>
+                        <th>Area</th>
+                        <th>Controller Name</th>
+                        <th>Action Name</th>
+                        <th>IsExternal</th>
+                        <th>ExternalUrl</th>
+                        <th>Permitted</th>
+                        <th>DisplayOrder</th>
+                        <th>Visible</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="EditMenuControl" asp-controller="Admin" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" data-modal="">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @(item.ParentNavigationMenu != null ? item.ParentNavigationMenu.Name : "")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Area)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ControllerName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ActionName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsExternal)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ExternalUrl)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Permitted)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DisplayOrder)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Visible)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+   
+</div>
+<style>
+    .has-children {
+        display: none;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('.sidepanel').attr("style","width:0;");
+    });
+    $("table").find(".open-child").click(function () {
+        $(this).parents("tr").siblings(".has-children").toggle();
+    })
+</script>

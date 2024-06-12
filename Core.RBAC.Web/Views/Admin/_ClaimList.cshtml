@@ -1,0 +1,51 @@
+﻿@model IEnumerable<System.Security.Claims.Claim>
+@{
+    Layout = null;
+    int FormId = 0;
+    var id = ViewBag.UserId;
+}
+
+<div asp-validation-summary="All" class="text-danger m-2"></div>
+
+<table class="table table-sm table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>UserName</th>
+            <th>Type</th>
+            <th>Value</th>
+           
+            <th>
+                <a class="btn btn-outline-primary" asp-action="AddClaims" asp-controller="Admin" asp-route-Id="@id" data-modal="">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var c in Model)
+        {
+            FormId++;
+
+            <tr>
+                <td>@User.Identity.Name</td>
+                <td>@c.Type</td>
+                <td>@c.Value</td>
+
+                <td>
+
+                    <a class="btn btn-outline-warning btn-sm" data-modal="" asp-action="EditClaims" asp-controller="Admin" asp-route-Id="@id" asp-route-type="@c.Type" asp-route-value="@c.Value">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+
+                    <a class="btn btn-outline-danger btn-sm" data-modal="" asp-action="DeleteClaims" asp-controller="Admin" asp-route-Id="@id" asp-route-type="@c.Type" asp-route-value="@c.Value">
+                        <i class="fa fa-trash"></i>
+                    </a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

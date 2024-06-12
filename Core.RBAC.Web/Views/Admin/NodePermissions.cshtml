@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Core.Models.RoleViewModel>
+@{
+    ViewData["Title"] = "Manage Node Roles";
+}
+<h4>Manage Node Roles</h4>
+
+@* <div class="row mt-3">
+	<div class="col-md-12">
+		@if (ViewBag.FilterOption != null)
+		{
+			foreach (var Ctr in ViewBag.FilterOption)
+			{
+				<a id="FilterOptions_@Ctr" class="btn btn-outline-info btn-sm"
+				   href="/Admin/PermissionList?filterOption=@Ctr" data-modal-filter-option="">@Ctr</a>
+			}
+		}
+	</div>
+</div> *@
+<div class="row mt-4">
+    <div class="row">
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label for="RoleId" class="control-label">Role Name</label>
+                @* @Html.DropDownList("ParentRoleId", null, "Select Role", new { @class = "form-select" }) *@
+                <input type="hidden" id="hdnParentRoleId" name="hdnParentRoleId" data-ajax-select-load="" data-ajax-target="#ParentRoleId" data-ajax-url="/Admin/GetRoleDropDownList" />
+                <select class="form-select" id="ParentRoleId" name="ParentRoleId" data-ajax-select="" data-ajax-target="#RoleId" data-ajax-url="/Admin/GetRoleGroupDropDownList">
+                    <option value="1">Select1</option>
+                    <option value="2">Select2</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="RoleId" class="control-label">Group Name</label>
+                @* @Html.DropDownList("RoleId", null, "Select Group", new { @class = "form-select" }) *@
+                <select class="form-select" id="RoleId" name="RoleId">
+                </select>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-12 mt-3" id="replacetarget">
+    </div>
+</div>
+<script>
+    window.onload = function () {
+        $('#replacetarget').load('/Admin/PermissionList?filterOption=All');
+    };
+    $(document).on("change", "#RoleId", function (e) {
+        $('#replacetarget').load('/Admin/PermissionList?roleid=' + $(this).val() + '&filterOption=All',
+            function () {
+                bindForm(this, null);
+            });
+
+        return false;
+    });
+    $(document).ready(function () {
+        LoadDefaultDropDown($('input[data-ajax-select-load]'));
+    });
+</script>

@@ -1,0 +1,32 @@
+﻿@model Core.Models.RoleViewModel
+
+@{
+	Layout = null;
+}
+
+
+<input type="hidden" id="header" value="Create Role Group" />
+<div class="row">
+	<div class="col-md-12">
+		<form asp-action="CreateRoleGroup">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label for="Name" class="control-label">Role Name</label>
+				<select asp-for="ParentRoleId" class="form-select" asp-items="@ViewBag.ParentRoleId">
+					<option>Select Role</option>
+				</select>
+				<span asp-validation-for="ParentRoleId" class="text-danger"></span>
+			</div>
+			<div class="form-group mt-3">
+				<label asp-for="Name" class="control-label"></label>
+				<input asp-for="Name" class="form-control" />
+				<span asp-validation-for="Name" class="text-danger"></span>
+			</div>
+			<div class="form-group mt-3">
+				<input type="submit" value="Submit" class="btn btn-outline-primary btn-sm" />
+			</div>
+		</form>
+
+	</div>
+</div>
+

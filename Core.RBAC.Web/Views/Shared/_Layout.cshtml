@@ -1,0 +1,330 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Core.RBAC.Web</title>
+    <link href="~/css/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Core.RBAC.Web.styles.css" asp-append-version="true" />
+    <link href="~/css/toastr.min.css" rel="stylesheet" />
+    @* <link href="~/css/sidebars.css" rel="stylesheet" /> *@
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/jquery-ui.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+    <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/toastr.min.js"></script>
+    <script src="~/js/orbit.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        .btn-default {
+            box-shadow: 0px 0px 0px 1px #d6d6d6 !important;
+        }
+        .auth-menu{
+            margin-left: -100px !important;
+        }
+        @@media all and (min-width: 992px) {
+            .dropdown-menu li {
+                position: relative;
+            }
+
+                .dropdown-menu li a i {
+                    position: absolute;
+                    right: 8px;
+                    top: 8px;
+                    margin-left: 8px;
+                }
+
+            .nav-item .submenu {
+                display: none;
+                position: absolute;
+                left: 100%;
+                top: -7px;
+            }
+
+            .nav-item .submenu-left {
+                right: 100%;
+                left: auto;
+            }
+
+            .dropdown-menu > li:hover {
+                background-color: #f1f1f1
+            }
+
+                .dropdown-menu > li:hover > .submenu {
+                    display: block;
+                }
+        }
+        /* ============ desktop view .end// ============ */
+
+        /* ============ small devices ============ */
+        @@media (max-width: 991px) {
+            .dropdown-menu .dropdown-menu {
+                margin-left: 0.7rem;
+                margin-right: 0.7rem;
+                margin-bottom: .5rem;
+            }
+
+            .auth-menu {
+                margin-left: 0px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            @await Component.InvokeAsync("NavigationMenu")
+            @*  <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Core.RBAC_V1 </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Forms" asp-action="Index">Forms</a>
+            </li>
+            </ul>
+            <partial name="_LoginPartial" />
+            </div>
+            </div> *@
+        </nav>
+        @* <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
+        <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+        <svg class="bi me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+        <span class="fs-5 fw-semibold">Collapsible</span>
+        </a>
+        <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
+        Home
+        </button>
+        <div class="collapse" id="home-collapse" style="">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+        <li><a href="#" class="link-dark rounded">Overview</a></li>
+        <li><a href="#" class="link-dark rounded">Updates</a></li>
+        <li><a href="#" class="link-dark rounded">Reports</a></li>
+        </ul>
+        </div>
+        </li>
+
+        <li class="border-top my-3"></li>
+        <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+        Account
+        </button>
+        <div class="collapse" id="account-collapse" style="">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+        <li><a href="#" class="link-dark rounded">New...</a></li>
+        <li><a href="#" class="link-dark rounded">Profile</a></li>
+        <li><a href="#" class="link-dark rounded">Settings</a></li>
+        <li><a href="#" class="link-dark rounded">Sign out</a></li>
+        </ul>
+        </div>
+        </li>
+        </ul>
+        </div> *@
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .sidepanel {
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            height: 100%;
+            box-shadow: 0px 0px 0px 1px #cdcdcd;
+            background-color: #fff;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 70px;
+        }
+
+
+            .sidepanel.left {
+                left: 0;
+            }
+
+            .sidepanel.right {
+                right: 0;
+            }
+
+
+
+            .sidepanel a:hover {
+                color: #f1f1f1;
+            }
+
+            .sidepanel .closebtn {
+                position: absolute;
+                top: 5px;
+                width: 100%;
+            }
+
+        .closebtn a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            color: #818181;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+            .closebtn a.left {
+                left: 0;
+            }
+
+            .closebtn a.right {
+                right: 0;
+            }
+
+        .closebtn h2 span {
+            margin-left: 15px;
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+        }
+
+            .openbtn:hover {
+                background-color: #444;
+            }
+    </style>
+    <div id="slideModal1" class="sidepanel right">
+        <h2 class="closebtn">
+            <a href="javascript:void(0)" class="left" onclick="closeNav(1)">×</a>
+            <span class="sidepan-header">Header</span>
+        </h2>
+
+        <div class="row">
+            <div class="col-md-12" id="sidePanBody1">
+            </div>
+        </div>
+    </div>
+    <div id="slideModal2" class="sidepanel right">
+        <h2 class="closebtn">
+            <a href="javascript:void(0)" class="left" onclick="closeNav(2)">×</a>
+            <span class="sidepan-header">Header</span>
+        </h2>
+
+        <div class="row">
+            <div class="col-md-12" id="sidePanBody2">
+            </div>
+        </div>
+    </div>
+    <div id="slideModal3" class="sidepanel right">
+        <h2 class="closebtn">
+            <a href="javascript:void(0)" class="left" onclick="closeNav(3)">×</a>
+            <span class="sidepan-header">Header</span>
+        </h2>
+
+        <div class="row">
+            <div class="col-md-12" id="sidePanBody3">
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).on("click", "a[sidepan-modal]", function () {
+            //var target = $(this).attr('sidepan-data-target-id');
+
+            $('#sidePanBody1').html('');
+            $('#sidePanBody1').html($('#' + $(this).attr('sidepan-data-target-id')).html());
+            $('#slideModal1 .sidepan-header').text($(this).attr('sidepan-data-target-header'));
+            document.getElementById("slideModal1").style.width = '' + $(this).attr('sidepan-data-target-width') + '';
+        });
+        $(document).on("click", "a[sidepan-modal2]", function () {
+            //var target = $(this).attr('sidepan-data-target-id');
+
+            $('#sidePanBody2').html('');
+            $('#sidePanBody2').html($('#' + $(this).attr('sidepan-data-target-id')).html());
+            $('#slideModal2 .sidepan-header').text($(this).attr('sidepan-data-target-header'));
+            document.getElementById("slideModal2").style.width = '' + $(this).attr('sidepan-data-target-width') + '';
+        });
+        $(document).on("click", "a[sidepan-modal3]", function () {
+            //var target = $(this).attr('sidepan-data-target-id');
+
+            $('#sidePanBody3').html('');
+            $('#sidePanBody3').html($('#' + $(this).attr('sidepan-data-target-id')).html());
+            $('#slideModal3 .sidepan-header').text($(this).attr('sidepan-data-target-header'));
+            document.getElementById("slideModal3").style.width = '' + $(this).attr('sidepan-data-target-width') + '';
+        });
+        function openNav() {
+            document.getElementById("slideModal").style.width = "80%";
+        }
+
+        function closeNav(num) {
+            document.getElementById("slideModal" + num).style.width = "0";
+        }
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; @(DateTime.Now.Year) - Core.RBAC.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // make it as accordion for smaller screens
+            if (window.innerWidth < 992) {
+
+                // close all inner dropdowns when parent is closed
+                document.querySelectorAll('.navbar .dropdown').forEach(function (everydropdown) {
+                    everydropdown.addEventListener('hidden.bs.dropdown', function () {
+                        // after dropdown is hidden, then find all submenus
+                        this.querySelectorAll('.submenu').forEach(function (everysubmenu) {
+                            // hide every submenu as well
+                            everysubmenu.style.display = 'none';
+                        });
+                    })
+                });
+
+                document.querySelectorAll('.dropdown-menu a').forEach(function (element) {
+                    element.addEventListener('click', function (e) {
+                        let nextEl = this.nextElementSibling;
+                        if (nextEl && nextEl.classList.contains('submenu')) {
+                            // prevent opening link if link needs to open dropdown
+                            e.preventDefault();
+                            if (nextEl.style.display == 'block') {
+                                nextEl.style.display = 'none';
+                            } else {
+                                nextEl.style.display = 'block';
+                            }
+
+                        }
+                    });
+                })
+            }
+            // end if innerWidth
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+﻿@model IEnumerable<Core.Models.RoleNodes>
+@{
+    Layout = null;
+}
+<style>
+    /* .table tr td, .table tr th {
+                text-align: center !important;
+            } */
+
+    .table th, .table td {
+        padding: 0px !important;
+        vertical-align: middle !important;
+    }
+
+    .table-sm th, .table-sm td {
+        font-size: x-small !important;
+    }
+</style>
+
+<form asp-action="NodeRolePermission">
+
+    <input type="hidden" name="RoleId" id="RoleId" value="@ViewBag.RoleId" />
+    @if (Model != null && Model.Count() > 0)
+    {
+        var Nodes = Model.Where(x => string.IsNullOrEmpty(x.ParentMenuId.ToString()) == true).ToList();
+        var p1_count = 0;
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <input type="submit" class="btn-outline-primary btn-sm" value="Submit" />
+            </div>
+        </div>
+
+        <table id="parent" class="table table-bordered table-sm">
+
+            <thead>
+
+                <tr>
+                    <th style="width:20%;">
+                        <label class="checkbox inline">
+                            <input name="chkHeader" type="checkbox" id="chkHeader" value="option1" data-no-uniform="true">
+                        </label>
+                        Title
+                    </th>
+                    <th style="width: 80%;text-align: center !important;">Child Nodes</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Nodes)
+                {
+                    var p2_count = 0;
+                    Nodes[p1_count].ChildRoleNodes = new List<Core.Models.RoleNodes>();
+                    <tr>
+
+                        <th style="width:20%;">
+                            <input type="checkbox" asp-for="@Nodes[p1_count].Permitted" class="chkChild" />
+                            <label style="margin-left:10px;" asp-for="@Nodes[p1_count].Permitted">@Nodes[p1_count].Name</label>
+                            <input type="hidden" asp-for="@Nodes[p1_count].Id" />
+                            <input type="hidden" asp-for="@Nodes[p1_count].Name" />
+                        </th>
+
+                        <td style="width: 80%;">
+                            @foreach (var child in Model.Where(x => x.ParentMenuId == item.Id))
+                            {
+                                var p3_count = 0;
+                                Nodes[p1_count].ChildRoleNodes.Add(child);
+
+                                Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes = new List<Core.Models.RoleNodes>();
+
+                                <table id="child" class="table table-bordered table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <th style="width: 30%;">
+                                                <input type="checkbox" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].Permitted" class="chkChild" />
+                                                <label style="margin-left:10px;" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].Permitted">@Nodes[p1_count].ChildRoleNodes[p2_count].Name</label>
+                                                <input type="hidden" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].Id" />
+                                                <input type="hidden" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].Name" />
+                                            </th>
+
+
+                                            <td style="width: 70%;">
+                                                @foreach (var subchild in Model.Where(x => x.ParentMenuId == child.Id))
+                                                {
+                                                    Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes.Add(subchild);
+                                                    <table id="subchild" class="table table-bordered table-sm" style="margin-bottom: 0;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th style="width: 40%;">
+                                                                    <input type="checkbox" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].Permitted" class="chkChild" />
+                                                                    <label style="margin-left:10px;" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].Permitted">@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].Name</label>
+                                                                    <input type="hidden" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].Id" />
+                                                                    <input type="hidden" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].Name" />
+                                                                </th>
+                                                                <th>
+                                                                    <input type="checkbox" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].CanView" class="CanView" />
+                                                                    <label style="margin-left:10px;" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].CanView">CanView</label>
+                                                                </th>
+                                                                <th>
+                                                                    <input type="checkbox" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].CanEdit" class="CanEdit" />
+                                                                    <label style="margin-left:10px;" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].CanEdit">CanEdit</label>
+                                                                </th>
+                                                                <th>
+                                                                    <input type="checkbox" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].CanDelete" class="CanDelete" />
+                                                                    <label style="margin-left:10px;" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].CanDelete">CanDelete</label>
+                                                                </th>
+                                                                <th>
+                                                                    <input type="checkbox" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].Active" class="Active" />
+                                                                    <label style="margin-left:10px;" asp-for="@Nodes[p1_count].ChildRoleNodes[p2_count].ChildRoleNodes[p3_count].Active">Active</label>
+
+                                                                </th>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    p3_count++;
+                                                }
+
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+
+
+                                p2_count++;
+                            }
+                        </td>
+
+
+                    </tr>
+                    p1_count++;
+                }
+            </tbody>
+        </table>
+
+    }
+</form>
+
+<script type="text/javascript">
+
+    $("[id*=chkHeader]").on("click", function () {
+        var chkHeader = $(this);
+        var grid = $(this).closest("table");
+        $("input[type=checkbox]", grid).each(function () {
+            if (chkHeader.is(":checked")) {
+                $(this).attr("checked", "checked");
+                $("td", $(this).closest("tr")).addClass("selected");
+                $("td .checker span", $(this).closest("tr")).addClass("checked");
+                // $("td .checker span", $(this).closest("tr")).addClass("selected");
+
+            } else {
+                $(this).removeAttr("checked");
+                $("td", $(this).closest("tr")).removeClass("selected");
+                //$("table tr td.checker span", $(this).closest("tr")).removeClass("checked");
+                $("td .checker span", $(this).closest("tr")).removeClass("checked");
+            }
+        });
+    });
+
+    $("[id*=chkParent]").on("click", function () {
+        var chkHeader = $(this);
+        var grid = $(this).closest("table tr");
+        $("[id*=chkParent1],[id*=chkchild],[id*=chkChild1],[id*=chkRow],[id*=chkRow1]", grid).each(function () {
+            if (chkHeader.is(":checked")) {
+                $(this).attr("checked", "checked");
+                $("td", $(this).closest("tr")).addClass("selected");
+                $("td .checker span", $(this).closest("tr")).addClass("checked");
+                // $("td .checker span", $(this).closest("tr")).addClass("selected");
+
+            } else {
+                $(this).removeAttr("checked");
+                $("td", $(this).closest("tr")).removeClass("selected");
+                //$("table tr td.checker span", $(this).closest("tr")).removeClass("checked");
+                $("td .checker span", $(this).closest("tr")).removeClass("checked");
+            }
+        });
+    });
+
+    $("[id*=chkchild]").on("click", function () {
+        var chkHeader = $(this);
+        var grid = $(this).closest("table tr td table tr");
+        $("[id*=chkChild1],[id*=chkRow],[id*=chkRow1]", grid).each(function () {
+            if (chkHeader.is(":checked")) {
+                $(this).attr("checked", "checked");
+                $("td", $(this).closest("tr")).addClass("selected");
+                $("td .checker span", $(this).closest("tr")).addClass("checked");
+
+            } else {
+                $(this).removeAttr("checked");
+                $("td", $(this).closest("tr")).removeClass("selected");
+                $("td .checker span", $(this).closest("tr")).removeClass("checked");
+            }
+        });
+    });
+
+    $("[id*=chkRow]").on("click", function () {
+        var chkHeader = $(this);
+        var grid = $(this).closest("table tr td table tr");
+        $("[id*=chkRow1]", grid).each(function () {
+            if (chkHeader.is(":checked")) {
+                $(this).attr("checked", "checked");
+                $("td", $(this).closest("tr")).addClass("selected");
+                $("td .checker span", $(this).closest("tr")).addClass("checked");
+
+            } else {
+                $(this).removeAttr("checked");
+                $("td", $(this).closest("tr")).removeClass("selected");
+                $("td .checker span", $(this).closest("tr")).removeClass("checked");
+            }
+        });
+    });
+
+    //$("[id*=chkRow]").live("click", function () {
+    //    var grid = $(this).closest("table tr td table tr td table");
+    //    var chkHeader = $("[id*=chkHeader]", grid);
+    //    if (!$(this).is(":checked")) {
+    //        $("td", $(this).closest("tr")).removeClass("selected");
+    //        $("td .checker span", $(this).closest("tr")).removeClass("checked");
+    //        chkHeader.removeAttr("checked");
+    //    } else {
+    //        $("td", $(this).closest("tr")).addClass("selected");
+    //        $("td .checker span", $(this).closest("tr")).addClass("checked");
+    //        if ($("[id*=chkRow]", grid).length == $("[id*=chkRow]:checked", grid).length) {
+    //            chkHeader.attr("checked", "checked");
+    //        }
+    //    }
+    //});
+    
+</script>

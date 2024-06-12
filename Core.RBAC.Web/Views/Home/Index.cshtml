@@ -1,0 +1,88 @@
+﻿@model List<Core.Models.DemoUsers>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1>Welcome To The</h1>
+    <h2>Role Based Access Control</h2>
+    <h5>This Is a Landing Page Allowed for All Roles</h5>
+
+    <p class="mt-5">
+        Role-Based Access Control (RBAC) in ASP.NET Core is a way to restrict or allow users to access specific resources in the application1. Here’s a brief overview of how it works:
+    </p>
+</div>
+<ol>
+    <li><strong>Define App Roles: </strong>The first step for implementing RBAC for an application is to define the app roles for it and assign users or groups to them2.</li>
+    <li><strong>Implement RBAC in ASP.NET Core: </strong>ASP.NET Core supports adding RBAC to an ASP.NET Core web application or web API. This can be done by using role checks with the ASP.NET Core Authorize attribute2. It’s also possible to use ASP.NET Core’s support for policy-based role checks2.</li>
+    <li><strong>Adding Role Checks: </strong> Role-based authorization checks are declarative and specify roles which the current user must be a member of to access the requested resource3. These checks can be applied to Razor Pages, controllers, or actions within a controller.</li>
+</ol>
+<hr />
+<div class="row">
+    <h5>Use The Following Demo User For Login</h5>
+    <div class="col-md-12">
+        <pre>
+        <code>
+            <table class="table table-bordered table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th>Sn</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        int count = 1;
+                        foreach (var item in Model.OrderBy(o => o.Role))
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@item.UserName</td>
+                                <td>@item.Email</td>
+                                <td>@item.RoleGroup</td>
+                                <td>@item.Role</td>
+                            </tr>
+                        count++;
+                        }
+                    }
+
+                </tbody>
+            </table>
+            </code>
+        </pre>
+    </div>
+</div>
+<hr />
+<div class="row mt-5">
+    <div class="col-md-12">
+        <h4>User Claims</h4>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <p><strong>UserName: </strong>@User.Identity.Name;</p>
+
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Claim Type</th>
+                        <th>Claim Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var claim in User.Claims)
+                    {
+                        <tr>
+                            <td>@claim.Type</td>
+                            <td>@claim.Value</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+

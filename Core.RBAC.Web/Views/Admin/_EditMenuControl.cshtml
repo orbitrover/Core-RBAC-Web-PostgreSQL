@@ -1,0 +1,84 @@
+﻿@model Core.Models.NavigationMenuViewModel
+
+@{
+	Layout = null;
+}
+
+
+<input type="hidden" id="header" value="Edit Control" />
+<div class="row">
+	<div class="alert alert-warning" role="alert">
+		<h6 class="alert-heading mb-2">Warning</h6>
+		<p class="mb-0">By editing the permission name, you might break the system permissions functionality. Please ensure you're absolutely certain before proceeding.</p>
+	</div>
+	<div class="col-md-12">
+		<form asp-action="EditMenuControl">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="Id" />
+			<div class="form-group">
+				<label asp-for="ParentMenuId" class="control-label"></label>
+				@* <select asp-for="ParentMenuId" class="form-select" asp-items="ViewBag.ParentMenuId">
+					<option selected>Select</option>
+				</select> *@
+				@Html.DropDownListFor(mode => Model.ParentMenuId, ViewBag.ParentMenuId as SelectList, "--Select--", new { @class = "form-select" })
+				<span asp-validation-for="ParentMenuId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Name" class="control-label"></label>
+				<input asp-for="Name" class="form-control" />
+				<span asp-validation-for="Name" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Area" class="control-label"></label>
+				<input asp-for="Area" class="form-control" />
+				<span asp-validation-for="Area" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="ControllerName" class="control-label"></label>
+				<input asp-for="ControllerName" class="form-control" />
+				<span asp-validation-for="ControllerName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="ActionName" class="control-label"></label>
+				<input asp-for="ActionName" class="form-control" />
+				<span asp-validation-for="ActionName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input asp-for="IsExternal" />
+				<label asp-for="IsExternal" class="control-label"></label>
+				<span asp-validation-for="IsExternal" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="ExternalUrl" class="control-label"></label>
+				<input asp-for="ExternalUrl" class="form-control" />
+				<span asp-validation-for="ExternalUrl" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="DisplayOrder" class="control-label"></label>
+				<input asp-for="DisplayOrder" class="form-control" />
+				<span asp-validation-for="DisplayOrder" class="text-danger"></span>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						
+						<input asp-for="Permitted" />
+						<label asp-for="Permitted" class="control-label"></label>
+						<span asp-validation-for="Permitted" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						
+						<input asp-for="Visible" />
+						<label asp-for="Visible" class="control-label"></label>
+						<span asp-validation-for="Visible" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group mt-3">
+				<input type="submit" value="Submit" class="btn btn-outline-primary btn-sm" />
+			</div>
+		</form>
+	</div>
+</div>
